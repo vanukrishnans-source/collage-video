@@ -53,6 +53,7 @@ class MainActivitySmokeTest {
                 repeat(20) { shadowOf(android.os.Looper.getMainLooper()).idle(); Thread.sleep(50) }
                 val vm = ViewModelProvider(act)[CollageViewModel::class.java]
                 assertEquals(ModelPhase.READY, vm.models.state.value.phase)
+                assertEquals(FilterStrictness.RELAXED, vm.state.value.strictness)
                 assertEquals(TransferOptions(), vm.state.value.transfer)
                 vm.setTransfer(TransferOptions(face = false, hair = false, skin = false, outfit = false))   // refused: nothing to take
                 assertEquals(TransferOptions(), vm.state.value.transfer)

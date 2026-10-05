@@ -15,13 +15,17 @@ class CollageLogicTest {
         assertEquals(listOf(2, 0, 1), CollageOrder.order(boxes))
     }
 
-    @Test fun safetyPlanSamplesEveryHalfSecondCapped() {
-        assertEquals(8, SafetyPlan.step(240, 15.0))       // 0.5 s at 15 fps -> every 7.5 -> 8th frame
-        assertEquals(15, SafetyPlan.step(900, 30.0))
-        assertTrue(SafetyPlan.step(5000, 30.0) * 60 >= 5000)  // at most ~60 checks
-        assertTrue(SafetyPlan.isSample(0, 8)); assertFalse(SafetyPlan.isSample(3, 8))
+    @Test fun safetyPlanSamplesEverySecondCapped() {
+        assertEquals(15, SafetyPlan.step(240, 15.0))      // 1 s at 15 fps -> every 15th frame
+        assertEquals(38, SafetyPlan.step(900, 30.0))  // max(30 fps*1s, ceil(900/24))
+        assertTrue(SafetyPlan.step(5000, 30.0) * SafetyPlan.MAX_SAMPLES >= 5000)  // at most ~24 checks
+        assertTrue(SafetyPlan.isSample(0, 15)); assertFalse(SafetyPlan.isSample(3, 15))
         assertTrue(SafetyPlan.blocked(0.6f, FilterStrictness.STANDARD.threshold))
         assertFalse(SafetyPlan.blocked(0.6f, FilterStrictness.RELAXED.threshold))
+        assertFalse(SafetyPlan.blocked(0.84f, FilterStrictness.RELAXED.threshold))
+        assertTrue(SafetyPlan.blocked(0.86f, FilterStrictness.RELAXED.threshold))
+        assertEquals(0.85f, FilterStrictness.RELAXED.threshold)
+        assertEquals(FilterStrictness.RELAXED, CollageUi().strictness)  // default matches AI Image Create
     }
 
     private fun box(x: Double) = doubleArrayOf(x, 100.0, x + 80.0, 400.0)

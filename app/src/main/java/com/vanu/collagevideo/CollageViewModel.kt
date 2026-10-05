@@ -53,7 +53,7 @@ data class CollageUi(
     val enhDone: Long = 0L,
     val accelerator: Boolean = false,
     val repeat: Boolean = true,
-    val strictness: FilterStrictness = FilterStrictness.STANDARD,
+    val strictness: FilterStrictness = FilterStrictness.RELAXED,
     val loading: String? = null,
     val error: String? = null,
     val errorDetail: String? = null,
@@ -80,7 +80,7 @@ class CollageViewModel(app: Application) : AndroidViewModel(app) {
         repeat = prefs.getBoolean("repeat", true),
         transfer = TransferOptions(prefs.getBoolean("t_face", true), prefs.getBoolean("t_hair", true), prefs.getBoolean("t_skin", true),
             prefs.getBoolean("t_outfit", true)),
-        strictness = runCatching { FilterStrictness.valueOf(prefs.getString("strictness", "STANDARD")!!) }.getOrDefault(FilterStrictness.STANDARD),
+        strictness = runCatching { FilterStrictness.valueOf(prefs.getString("strictness", "RELAXED")!!) }.getOrDefault(FilterStrictness.RELAXED),
         enhance = runCatching { EnhanceMode.valueOf(prefs.getString("video_enhance", "OFF")!!) }.getOrDefault(EnhanceMode.OFF)))
     val state: StateFlow<CollageUi> = _state.asStateFlow()
     val job: StateFlow<JobState> = Jobs.state

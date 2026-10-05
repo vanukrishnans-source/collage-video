@@ -30,8 +30,12 @@ class SafetyFilter(model: File, threads: Int = 2) : Closeable {
         val x = preprocess(img)
         OnnxTensor.createTensor(env, FloatBuffer.wrap(x), longArrayOf(1, 3, SIZE.toLong(), SIZE.toLong())).use { t ->
             session.run(mapOf("pixel_values" to t)).use { r ->
-                val probs = (r.get(0) as OnnxTensor).floatBuffer
-                return probs.get(1)
+                // Falconsai id2label: 0=normal, 1=nsfw. Copy via remaining() like AI Image Create
+                // so we never depend on absolute FloatBuffer indexing quirks across ORT builds.
+                val fb = (r.get(0) as OnnxTensor).floatBuffer
+                val probs = FloatArray(fb.remaining()).also { fb.get(it) }
+                require(probs.size >= 2) { "safety model returned ${probs.size} probs, expected 2" }
+                return probs[1]   // P(nsfw)
             }
         }
     }

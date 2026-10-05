@@ -233,7 +233,7 @@ class CollageJobService : Service() {
             return JobParams(v, f, getLongExtra("start", 0), getLongExtra("end", 0), getDoubleExtra("fps", 15.0),
                 runCatching { EnhanceMode.valueOf(getStringExtra("enhance")!!) }.getOrDefault(EnhanceMode.OFF),
                 getBooleanExtra("accel", false), o,
-                runCatching { FilterStrictness.valueOf(getStringExtra("strict")!!) }.getOrDefault(FilterStrictness.STANDARD),
+                runCatching { FilterStrictness.valueOf(getStringExtra("strict")!!) }.getOrDefault(FilterStrictness.RELAXED),
                 getIntExtra("shift", 0), getBooleanExtra("repeat", true), getIntArrayExtra("enabled") ?: IntArray(0),
                 getIntArrayExtra("personFace"),
                 TransferOptions(getBooleanExtra("tFace", true), getBooleanExtra("tHair", true), getBooleanExtra("tSkin", true),

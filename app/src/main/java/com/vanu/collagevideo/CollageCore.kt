@@ -151,8 +151,8 @@ object People {
 }
 
 object SafetyPlan {
-    const val INTERVAL_S = 0.5
-    const val MAX_SAMPLES = 60
+    const val INTERVAL_S = 1.0
+    const val MAX_SAMPLES = 24
 
     /**
      * The safety filter checks every [step]-th selected frame of the reference video, starting with
@@ -166,7 +166,8 @@ object SafetyPlan {
     fun blocked(score: Float, threshold: Float) = score > threshold
 }
 
-/** NSFW filter strictness. The filter itself is always on; there is deliberately no "off" (same policy as AI Image Create). */
+/** NSFW filter strictness. The filter itself is always on; there is deliberately no "off" (same policy as AI Image Create).
+ *  Default is [RELAXED] (threshold 0.85), matching AI Image Create — block only high-confidence NSFW. */
 enum class FilterStrictness(val threshold: Float, val label: String, val help: String) {
     STANDARD(0.5f, "Standard", "Blocks anything that looks likely to be explicit."),
     RELAXED(0.85f, "Relaxed", "Blocks only clearly explicit content."),

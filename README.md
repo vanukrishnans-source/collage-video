@@ -62,10 +62,9 @@ GitHub/Hugging Face repositories, and the MediaPipe models from Google's model s
 ## Safety filter (same policy as the image apps)
 
 The safety filter is **always on and can't be switched off**:
-- It checks the collage photo, plus one reference frame every 0.5 s (at most about 60 checks).
+- It checks the collage photo, plus one reference frame every 1 s (at most about 24 checks).
 - If anything is flagged, **no video is made** and the job stops at the first flagged frame.
-- *Standard* blocks at NSFW score > 0.5. *Relaxed* blocks at > 0.85 and is for false positives such as swimwear or
-  beach photos.
+- Default is *Relaxed* (same as AI Image Create): blocks at NSFW score > 0.85. *Standard* blocks at > 0.5.
 
 ## Honest limits
 
