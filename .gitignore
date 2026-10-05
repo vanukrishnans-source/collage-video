@@ -11,3 +11,6 @@ release.jks
 dist/*.apk
 models_build/*.onnx
 models_build/
+testdata/
+proto/
+__pycache__/
